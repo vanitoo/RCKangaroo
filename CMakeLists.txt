@@ -42,6 +42,7 @@ set(PROJECT_SOURCES
     Ec.cpp
     utils.cpp
     CallCubin.cpp
+    DPExport.cpp
     RCGpuCore.cu
 )
 
