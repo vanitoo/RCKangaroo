@@ -5,6 +5,7 @@
 
 
 #include "utils.h"
+#include "DPExport.h"
 #include <wchar.h>
 
 #ifdef _WIN32
@@ -212,6 +213,11 @@ u8* TFastBase::FindDataBlock(u8* data)
 
 u8* TFastBase::FindOrAddDataBlock(u8* data)
 {
+	// Every live distinguished point passes this boundary after RCKangaroo.cpp
+	// has normalized GPU output into packed DBRec (x[12], d[22], type).
+	// Export before deduplication so the file represents actual worker output.
+	DPExportMaybeWrite(data);
+
 	void* ptr;
 	TListRec* list = &lists[data[0]][data[1]][data[2]];
 	int first = lower_bound(list, data[0], data + 3);

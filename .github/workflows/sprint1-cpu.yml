@@ -1,0 +1,33 @@
+name: sprint1-cpu-checks
+
+on:
+  push:
+    branches:
+      - feature/sprint1-dp-export
+  pull_request:
+
+jobs:
+  dp-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile CPU-only DP exporter test
+        run: |
+          g++ -std=c++20 -Wall -Wextra -Werror -Wno-unknown-pragmas -I. \
+            DPExport.cpp tools/dp_export_smoketest.cpp \
+            -o dp_export_smoketest
+
+      - name: Syntax-check worker RNG module
+        run: |
+          g++ -std=c++20 -Wall -Wextra -Werror -Wno-unknown-pragmas -I. \
+            -fsyntax-only WorkerSeed.cpp
+
+      - name: Write and inspect sample DP file
+        run: |
+          ./dp_export_smoketest
+          python3 tools/inspect_dp.py dp-export-smoke.bin --show 2
+
+      - name: Validate Python tools
+        run: |
+          python3 -m py_compile tools/inspect_dp.py tools/rck_worker.py

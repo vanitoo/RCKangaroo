@@ -44,6 +44,9 @@ public:
 
 	void RndBits(int nbits);
 	void RndMax(EcInt& max);
+	// Sprint 1: deterministic worker-local RNG used only from GpuKang.cpp
+	// when RCK_SEED is set. Otherwise it delegates to the original RndMax().
+	void RndMaxWithWorker(EcInt& max, int cuda_index);
 
 	u64 data[4 + 1];
 };
