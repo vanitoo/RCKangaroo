@@ -86,3 +86,10 @@ public:
 
 	int GetStatsSpeed();
 };
+
+// Defined only for the GpuKang.cpp translation unit by CMake. This keeps the
+// original jump-table RNG in RCKangaroo.cpp untouched while making GPU start
+// distances deterministic for a configured worker seed.
+#ifdef RCK_WORKER_RNG_HOOK
+#define RndMax(max_value) RndMaxWithWorker((max_value), CudaIndex)
+#endif
