@@ -43,8 +43,13 @@ set(PROJECT_SOURCES
     utils.cpp
     CallCubin.cpp
     DPExport.cpp
+    WorkerSeed.cpp
     RCGpuCore.cu
 )
+
+# Only GpuKang.cpp gets the RndMax macro hook. RCKangaroo.cpp keeps the
+# original RNG path for deterministic jump-table construction and tame-file compatibility.
+set_source_files_properties(GpuKang.cpp PROPERTIES COMPILE_DEFINITIONS RCK_WORKER_RNG_HOOK=1)
 
 add_executable(${TARGET_NAME} ${PROJECT_SOURCES})
 
@@ -91,5 +96,16 @@ endif()
 
 set_target_properties(${TARGET_NAME} PROPERTIES
     CUDA_RUNTIME_LIBRARY Static
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# CPU-only formatter test. It does not exercise CUDA, but verifies that the
+# binary DP format can be written by the same DPExport implementation.
+add_executable(dp_export_smoketest
+    tools/dp_export_smoketest.cpp
+    DPExport.cpp
+)
+target_include_directories(dp_export_smoketest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+set_target_properties(dp_export_smoketest PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
