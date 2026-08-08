@@ -52,7 +52,7 @@ private:
 // Environment variables:
 //   RCK_DP_OUT      output filename (required to enable export)
 //   RCK_WORKER_ID   uint32 worker id (default 0)
-//   RCK_SEED        uint64 metadata seed (default 0; trajectory seeding is separate)
+//   RCK_SEED        uint64 deterministic worker seed and exported metadata
 //   RCK_RANGE       range bits stored in the header (default 0)
 //   RCK_DP_BITS     DP bits stored in the header (default 0)
 void DPExportMaybeWrite(const u8* db_record);
