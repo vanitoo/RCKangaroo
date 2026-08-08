@@ -46,3 +46,15 @@ private:
     u32 worker_id_;
     u64 sequence_;
 };
+
+// Sprint 1 integration hook. It is deliberately opt-in so the original
+// execution path remains unchanged unless RCK_DP_OUT is set.
+// Environment variables:
+//   RCK_DP_OUT      output filename (required to enable export)
+//   RCK_WORKER_ID   uint32 worker id (default 0)
+//   RCK_SEED        uint64 metadata seed (default 0; trajectory seeding is separate)
+//   RCK_RANGE       range bits stored in the header (default 0)
+//   RCK_DP_BITS     DP bits stored in the header (default 0)
+void DPExportMaybeWrite(const u8* db_record);
+void DPExportShutdown();
+u64 DPExportRecordCount();
