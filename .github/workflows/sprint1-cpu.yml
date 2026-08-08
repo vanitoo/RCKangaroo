@@ -18,6 +18,11 @@ jobs:
             DPExport.cpp tools/dp_export_smoketest.cpp \
             -o dp_export_smoketest
 
+      - name: Syntax-check worker RNG module
+        run: |
+          g++ -std=c++20 -Wall -Wextra -Werror -Wno-unknown-pragmas -I. \
+            -fsyntax-only WorkerSeed.cpp
+
       - name: Write and inspect sample DP file
         run: |
           ./dp_export_smoketest
